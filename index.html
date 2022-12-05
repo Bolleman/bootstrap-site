@@ -15,7 +15,7 @@
 			rel="canonical"
 			href="https://getbootstrap.com/docs/5.2/examples/cheatsheet/"
 		/>
-
+		<script src="https://unpkg.com/adaptivecards@2.11.1/dist/adaptivecards.min.js"></script>
 		<link href="./css/bootstrap.min.css" rel="stylesheet" />
 
 		<style>
@@ -3590,5 +3590,23 @@
 		<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 
 		<script src="cheatsheet.js"></script>
+
+		<script>
+			async function renderCard() {
+				const cardPromise = await fetch("/card.json");
+				const card = await cardPromise.json();
+				const adaptiveCard = new AdaptiveCards.AdaptiveCard();
+				adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
+					fontFamily: "Segoe UI, Helvetica Neue, sans-serif",
+				});
+				adaptiveCard.parse(card);
+				adaptiveCard.onExecuteAction = function (action) {
+					alert(JSON.stringify(action.data));
+				};
+				const renderedCard = adaptiveCard.render();
+				document.body.appendChild(renderedCard);
+			}
+			renderCard();
+		</script>
 	</body>
 </html>
